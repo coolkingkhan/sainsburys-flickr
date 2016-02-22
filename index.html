@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sainsburys Javascript Test</title>
+	<style>
+		* {
+		  box-sizing: border-box;
+		  margin: 0;
+		  padding: 0;
+		}
+
+		.main-container {
+		  display: block;
+		  position: relative;
+		  width: 100%;
+		}
+
+		#flickrfeed ul {
+		  list-style-type: none;
+		  width: 800px;
+		  display: -webkit-box;
+		  display: -webkit-flex;
+		  display: -ms-flexbox;
+		  display: flex;
+		  margin: 0 auto;
+		  clear: both;
+		  -webkit-flex-wrap: wrap;
+		  -ms-flex-wrap: wrap;
+		  flex-wrap: wrap;
+		  -webkit-box-orient: horizontal;
+		  -webkit-box-direction: normal;
+		  -webkit-flex-direction: row;
+		  -ms-flex-direction: row;
+		  flex-direction: row;
+		  -webkit-box-pack: justify;
+		  -webkit-justify-content: space-between;
+		  -ms-flex-pack: justify;
+		  justify-content: space-between;
+		}
+
+
+
+		#flickrfeed img {
+		  border: 1px solid #ccc;
+		  margin-bottom: 40px;
+		  position: relative;
+		  z-index: 0;
+		  overflow: hidden;
+		}
+
+		.selected {
+		  opacity: 0.6;
+		  -webkit-filter: grayscale(100%);
+		  filter: grayscale(100%);
+		  -webkit-transition: all .2s;
+		  transition: all .2s;
+		}
+
+	</style>
+
+	<script type = "text/javascript">
+
+		(function () {
+
+			var tags = 'london',
+			  label = 'Small 320',
+			  script = document.createElement( 'script' );
+
+			  script.src ='http://api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=cb&tags=' + tags + '&label=' + label;
+			  document.head.appendChild(script);
+
+		})();
+
+		function cb(data) {
+			// output the flickr images from loaded api into list
+			var output='<ul>';
+			for (var i=0; i < 9; i++) { 
+				var imgURL = data.items[i].media.m;
+				output+='<li class="flickrlistitem">' + '<img src=' + imgURL + '/>' + '</li>';
+			}
+			output+='</ul>';
+			document.getElementById('flickrfeed').innerHTML = output;
+
+			// add click event on li
+			var anchor = document.querySelectorAll('.flickrlistitem');				
+		    for (var i=0; i < anchor.length; i++){
+		        anchor[i].addEventListener("click", function(){
+		        	if (this.className === 'flickrlistitem selected'){
+		        		return this.className = 'flickrlistitem';
+		        	} else {
+		        		return this.className += ' selected';
+		        	}
+		        }, false);
+		    }	
+		}
+
+	</script>
+</head>
+<body>
+	<div class="main-container">
+	  <div id="flickrfeed"></div>
+	</div>
+
+	<div id="result"></div>
+</body>
+</html>
